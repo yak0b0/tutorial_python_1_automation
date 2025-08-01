@@ -1,7 +1,9 @@
 # our mission is to show, how we would modify values be a certain amount for X rows
 
 # importing openpyxl, to work with excel files
+# from openpyxl importing the chart module, to create a chart
 import openpyxl as xl
+from openpyxl.chart import BarChart, Reference
 
 # loading in our data
 wb = xl.load_workbook('info.xlsx')
@@ -25,6 +27,23 @@ for row in range(2, sheet.max_row+1):
     corrected_cell_value = cell.value * 0.5
     corrected_cell = sheet.cell(row, 4)
     corrected_cell.value = corrected_cell_value
+
+# selecting a range of values
+
+values = Reference(sheet,
+                   min_row=2,
+                   max_row=sheet.max_row,
+                   min_col=4,
+                   max_col=4)
+
+# creating a chart
+
+chart = BarChart()
+chart.add_data(values)
+
+# adding the chart to our sheet
+
+sheet.add_chart(chart, 'e2')
 
 # saving our new file
 
